@@ -8,12 +8,15 @@ class HomeController extends GetxController {
   RxList<Meals> discoverRecipeList = <Meals>[].obs;
   RxList<CategoryList> categoryList = <CategoryList>[].obs;
 
+  RxBool isLoading = false.obs;
+
   TextEditingController searchText = TextEditingController();
 
   @override
-  void onInit() {
-    getDiscoverRecipe();
-    getCategoryList();
+  Future<void> onInit() async {
+    isLoading.value = true;
+    await getDiscoverRecipe();
+    await getCategoryList();
     super.onInit();
   }
 
@@ -23,10 +26,12 @@ class HomeController extends GetxController {
       discoverRecipeList.value = response.meals!;
     }
   }
+
   getCategoryList() async {
     final response = await ApiService.getCategoryList();
     if (response != null) {
       categoryList.value = response.categoryList!;
     }
+    isLoading.value = false;
   }
 }

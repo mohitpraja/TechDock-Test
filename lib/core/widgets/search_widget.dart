@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_dock_test/core/theme/colors.dart';
+import 'package:tech_dock_test/core/theme/icons.dart';
 
 class SearchWidget extends StatelessWidget {
   final TextEditingController? textEditingController;
@@ -28,10 +28,7 @@ class SearchWidget extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5),
               borderSide: BorderSide(color: grey.withOpacity(0.4))),
-          prefixIcon: Icon(
-            CupertinoIcons.search,
-            color: grey,
-          ),
+          prefixIcon:AppIcons.searchIcon,
         ),
         controller: textEditingController,
         onSubmitted: onSubmitted);

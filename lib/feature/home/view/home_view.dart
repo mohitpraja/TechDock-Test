@@ -7,6 +7,7 @@ import 'package:tech_dock_test/core/model/discover_recipe_response.dart';
 import 'package:tech_dock_test/core/routes/routes.dart';
 import 'package:tech_dock_test/core/theme/colors.dart';
 import 'package:tech_dock_test/core/theme/fonts.dart';
+import 'package:tech_dock_test/core/widgets/custom_loader.dart';
 import 'package:tech_dock_test/core/widgets/search_widget.dart';
 import 'package:tech_dock_test/feature/home/controller/home_controller.dart';
 
@@ -22,18 +23,22 @@ class HomeView extends GetView<HomeController> {
         body: Container(
           margin: const EdgeInsets.all(12),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // ======================= SEARCH BAR ========================
-                _buildSearchBar(),
-                // ======================= CATEGORY LIST ========================
-                _buildCategoryList(),
-                // ======================= DISCOVER RECIPE ========================
-                _buildDiscoverRecipe(),
-                // ======================= STATIC CARD ========================
-                _buildStaticCard(),
-              ],
-            ),
+            child: Obx(() => controller.isLoading.value
+                ? SizedBox(
+                    height: Get.height * 0.8,
+                    child: Center(child: customLoader()))
+                : Column(
+                    children: [
+                      // ======================= SEARCH BAR ========================
+                      _buildSearchBar(),
+                      // ======================= CATEGORY LIST ========================
+                      _buildCategoryList(),
+                      // ======================= DISCOVER RECIPE ========================
+                      _buildDiscoverRecipe(),
+                      // ======================= STATIC CARD ========================
+                      _buildStaticCard(),
+                    ],
+                  )),
           ),
         ),
       ),
@@ -46,7 +51,7 @@ class HomeView extends GetView<HomeController> {
       actions: [
         IconButton(
             onPressed: () {
-              controller.getDiscoverRecipe();
+              Get.toNamed(Routes.favourites);
             },
             icon: Icon(
               CupertinoIcons.heart_fill,

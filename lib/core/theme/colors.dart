@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 Color primaryColor = const Color.fromARGB(255, 100, 30, 25);
 Color red = Colors.red;
+Color blue = Colors.blue;
 Color grey = Colors.black54;
 Color white = Colors.white;
 Color transparent = Colors.transparent;

@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tech_dock_test/core/helper/helper.dart';
 import 'package:tech_dock_test/core/model/search_recipe_response.dart';
+import 'package:tech_dock_test/core/routes/routes.dart';
 import 'package:tech_dock_test/core/theme/colors.dart';
 import 'package:tech_dock_test/core/theme/fonts.dart';
+import 'package:tech_dock_test/core/widgets/custom_list_tile.dart';
 import 'package:tech_dock_test/core/widgets/custom_loader.dart';
 import 'package:tech_dock_test/core/widgets/search_widget.dart';
 import 'package:tech_dock_test/feature/searchResult/controller/search_result_controller.dart';
@@ -23,11 +24,14 @@ class SearchResultView extends GetView<SearchResultController> {
           children: [
             SearchWidget(
               textEditingController: controller.searchQuery,
+              onSubmitted: (p0) {
+                controller.getSearchResult(query: controller.searchQuery.text);
+              },
             ),
             _buildResultText(),
             Obx(() => Flexible(
                 child: controller.isLoading.value
-                    ?  customLoader()
+                    ? customLoader()
                     : _buildSearchResultList()))
           ],
         ),
@@ -61,36 +65,21 @@ class SearchResultView extends GetView<SearchResultController> {
   _buildSearchResultList() {
     return ListView.separated(
       itemCount: controller.searchResultList.length,
-      separatorBuilder: (context, index) => const SizedBox(
-        height: 10,
-      ),
+      separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (context, index) {
         SearchResultList data = controller.searchResultList[index];
-        return Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                imageUrl: data.image ?? '',
-                width: 100,
-                height: 80,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-                child: Text(
-              data.title ?? '',
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: FF.lato,
-                color: grey,
-              ),
-            )),
-            IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.heart))
-          ],
+        return CustomListTile(
+          data: data,
+          onTap: () => Get.toNamed(Routes.showRecipe, arguments: [
+            {
+              'name': data.title ?? '',
+              'id': data.id ?? 0,
+              'image': data.image ?? ''
+            }
+          ]),
+          onFavPressed: () {
+            addToFavourite(data: data, list: controller.searchResultList);
+          },
         );
       },
     );

@@ -1,21 +1,22 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:tech_dock_test/core/model/category_list_response.dart';
 import 'package:tech_dock_test/core/model/discover_recipe_response.dart';
+import 'package:tech_dock_test/core/model/recipe_ingredient_response.dart';
+import 'package:tech_dock_test/core/model/recipe_instruction_response.dart';
+import 'package:tech_dock_test/core/model/recipe_nutrition_response.dart';
 import 'package:tech_dock_test/core/model/search_recipe_response.dart';
+import 'package:tech_dock_test/service/hive/apiCaching/api_cache_helper.dart';
 import 'package:tech_dock_test/service/url_constant.dart';
 
 class ApiService {
-  static Dio dio = Dio();
-  static Dio spoonacularDio = Dio(BaseOptions(
-      headers: {"Content-Type": "application/json", "x-api-key": apiKey}));
-  static String apiKey = 'bc1ca8ab9c7b4ab1b4291137c736d211';
 
   static Future<DiscoverRecipeResponse?> getDiscoverRecipe() async {
     try {
-      Response response = await dio.get(Urls.discoverRecipe);
-      return DiscoverRecipeResponse.fromJson(response.data);
+      Response response = await ApiCacheHelper.getJsonResponse(endpoint: Urls.discoverRecipe);
+      return DiscoverRecipeResponse.fromJson(jsonDecode(response.data));
     } catch (e) {
       log("error : $e");
     }
@@ -24,8 +25,8 @@ class ApiService {
 
   static Future<CategoryListResponse?> getCategoryList() async {
     try {
-      Response response = await dio.get(Urls.categoryList);
-      return CategoryListResponse.fromJson(response.data);
+      Response response =  await ApiCacheHelper.getJsonResponse(endpoint: Urls.categoryList);
+      return CategoryListResponse.fromJson(jsonDecode(response.data));
     } catch (e) {
       log("error : $e");
     }
@@ -35,11 +36,44 @@ class ApiService {
   static Future<SearchRecipeResponse?> searchRecipe(
       {required String query}) async {
     try {
-      Response response = await spoonacularDio.get("${Urls.searchRecipe}$query");
-      return SearchRecipeResponse.fromJson(response.data);
+      Response response =  await ApiCacheHelper.getJsonResponse(endpoint:"${Urls.searchRecipe}$query");
+      return SearchRecipeResponse.fromJson(jsonDecode(response.data));
     } catch (e) {
       log("error : $e");
     }
     return null;
   }
+  
+  static Future<RecipeNutritionResponse?> getRecipeNutrition(
+      {required int id}) async {
+    try {
+      Response response =  await ApiCacheHelper.getJsonResponse(endpoint:Urls.recipeNutrition(id));
+      return RecipeNutritionResponse.fromJson(jsonDecode(response.data));
+    } catch (e) {
+      log("error : $e");
+    }
+    return null;
+  }
+  static Future<RecipeIngredientResponse?> getRecipeIngredient(
+      {required int id}) async {
+    try {
+      Response response =  await ApiCacheHelper.getJsonResponse(endpoint:Urls.recipeIngredient(id));
+      return RecipeIngredientResponse.fromJson(jsonDecode(response.data));
+    } catch (e) {
+      log("error : $e");
+    }
+    return null;
+  }
+  static Future<List<RecipeInstructionResponse>?> getRecipeInstruction(
+      {required int id}) async {
+    try {
+      Response response =  await ApiCacheHelper.getJsonResponse(endpoint:Urls.recipeInstruction(id));
+      
+      return recipeInstructionResponseFromJson(response.data);
+    } catch (e) {
+      log("error : $e");
+    }
+    return null;
+  }
+  static List<RecipeInstructionResponse> recipeInstructionResponseFromJson(String str) => List<RecipeInstructionResponse>.from(json.decode(str).map((x) => RecipeInstructionResponse.fromJson(x)));
 }
