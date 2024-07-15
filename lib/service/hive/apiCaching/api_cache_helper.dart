@@ -7,7 +7,7 @@ import 'package:tech_dock_test/service/hive/apiCaching/api_response_box.dart';
 
 class ApiCacheHelper {
   static String apiKey = 'bc1ca8ab9c7b4ab1b4291137c736d211';
-  static const int _cacheTimeout = 3 * 60 * 60 * 1000; // 12 hour
+  static const int _cacheTimeout = 24 * 60 * 60 * 1000; // 24 hour
   static deleteAllApiCache() async {
     log('*** all api cache cleared***');
     final box = await Hive.openBox('apiResponses');

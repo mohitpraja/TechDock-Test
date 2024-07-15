@@ -12,7 +12,7 @@ Offline Access: Need only one time internet
 ## Apk File
 
 Download -  
-> [Download Apk](https://drive.google.com/file/d/1UyZo6BalaZQRfeTfgbKXNIeeykzWzfWq/view?usp=sharing)
+> [Download Apk](https://drive.google.com/file/d/1-Ps99ljSVQmvJRQzYCH0mhvgk9DNjXl_/view?usp=sharing)
 
 ## ScreenShots
 
