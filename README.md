@@ -5,9 +5,9 @@ Welcome to the Recipe Finder App! This application helps you discover and organi
 ## Features
 
 Explore - Discover new recipe daily <br>
-Search Recipes: Find recipes by ingredients, cuisine, or dietary restrictions. <br>
-Save Favorites: Save your favorite recipes for easy access later. <br>
-Offline Access: Need only one time internet 
+Search Recipes - Find recipes by ingredients, cuisine, or dietary restrictions. <br>
+Save Favorites - Save your favorite recipes for easy access later. <br>
+Api Caching - 
 
 ## Apk File
 
